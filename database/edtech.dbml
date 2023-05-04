@@ -1,0 +1,163 @@
+Project edtech{
+    description: "Database documentation for edtech application"
+}
+
+Table admins {
+    id int [pk, increment]
+    email varchar(255)
+    password varchar(255)
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
+
+Table users {
+    id int [pk, increment]
+    name varchar(255)
+    email varchar(255)
+    password varchar(255)
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
+
+Table forgot_passwords {
+    id int [pk, increment]
+    validity bool
+    expire_at timestamp
+    user_id int [ref: > users.id]
+}
+
+Table product_categories {
+    id int [pk, increment]
+    name varchar(255)
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+Table products {
+    id int [pk, increment]
+    title varchar(255)
+    description text
+    price int
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+    product_category_id int [ref: > product_categories.id]
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+Enum discount_type {
+    percentage
+    fixed
+}
+
+Table discounts {
+    id int [pk, increment]
+    name varchar(255)
+    code varchar(255)
+    quantity int
+    remaining_quantity int
+    type discount_type
+    start_date timestamp
+    end_date timestamp
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+Enum order_status {
+    pending
+    completed
+    cancelled
+}
+
+Table orders {
+    id int [pk, increment]
+    checkout_link varchar(255)
+    price int
+    total_price int
+    external_link varchar(255)
+    status order_status
+    discount_id int [ref: > discounts.id]
+    user_id int [ref: > users.id]
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+Table order_details {
+    id int [pk, increment]
+    price int
+    product_id int [ref: > products.id]
+    order_id int [ref: > orders.id]
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
+
+Table carts {
+    id int [pk, increment]
+    product_id int [ref: > products.id]
+    user_id int [ref: > users.id]
+    created_at timestamp
+    updated_at timestamp
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+Table class_rooms {
+    id int [pk, increment]
+    product_id int [ref: > products.id]
+    user_id int [ref: > users.id, note: "Buyer"]
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+    created_by int [ref: > users.id]
+    updated_by int [ref: > users.id]
+}
+
+
+Table oauth_clients {
+    id int [pk, increment]
+    client_id varchar(255)
+    client_secret varchar(255)
+    name varchar(255)
+    redirect varchar(255)
+    description text
+    scope varchar(255)
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
+
+Table oauth_access_tokens {
+    id int [pk, increment]
+    access_token varchar(255)
+    user_id int 
+    scope varchar(255)
+    oauth_client_id int [ref: > oauth_clients.id]
+    expire_at timestamp
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
+
+Table oauth_refresh_tokens {
+    id int [pk, increment]
+    user_id int
+    access_token varchar(255)
+    oauth_access_token_id int [ref: > oauth_access_tokens.id]
+    expire_at timestamp
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
+}
