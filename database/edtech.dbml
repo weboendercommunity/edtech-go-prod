@@ -26,6 +26,9 @@ Table forgot_passwords {
     validity bool
     expire_at timestamp
     user_id int [ref: > users.id]
+    created_at timestamp
+    updated_at timestamp
+    deleted_at timestamp
 }
 
 Table product_categories {
@@ -43,10 +46,10 @@ Table products {
     title varchar(255)
     description text
     price int
+    product_category_id int [ref: > product_categories.id]
     created_at timestamp
     updated_at timestamp
     deleted_at timestamp
-    product_category_id int [ref: > product_categories.id]
     created_by int [ref: > users.id]
     updated_by int [ref: > users.id]
 }
@@ -81,7 +84,6 @@ Enum order_status {
 Table orders {
     id int [pk, increment]
     checkout_link varchar(255)
-    price int
     total_price int
     external_link varchar(255)
     status order_status
