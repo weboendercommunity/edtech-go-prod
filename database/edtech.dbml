@@ -16,6 +16,8 @@ Table users {
     name varchar(255)
     email varchar(255)
     password varchar(255)
+    code_verified varchar(255)
+    email_verified_at timestamp
     created_at timestamp
     updated_at timestamp
     deleted_at timestamp

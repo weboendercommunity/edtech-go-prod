@@ -1,6 +1,7 @@
 CREATE TABLE orders(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     checkout_link VARCHAR(255) NOT NULL,
+    price INT(10) UNSIGNED NOT NULL,
     total_price INT(10) UNSIGNED NOT NULL,
     external_link VARCHAR(255) NOT NULL,
     status ENUM('pending', 'completed', 'canceled') NOT NULL DEFAULT 'pending',

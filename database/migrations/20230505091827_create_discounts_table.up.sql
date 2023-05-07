@@ -3,6 +3,7 @@ CREATE TABLE discounts(
     name VARCHAR(255) NOT NULL,
     code VARCHAR(255) NOT NULL,
     quantity INT(10) UNSIGNED NOT NULL,
+    value INT(10) UNSIGNED NOT NULL,
     remaining_quantity INT(10) UNSIGNED NOT NULL,
     type ENUM('percentage', 'fixed') NOT NULL,
 
