@@ -10,7 +10,7 @@ import (
 
 	registerHandler "edtech.id/internal/register/delivery/http"
 	registerUseCase "edtech.id/internal/register/usecase"
-	mail "edtech.id/pkg/mail/sendgrid"
+	mail "edtech.id/pkg/mail/gomail"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 
 	r := gin.Default()
 
-	mail := mail.NewMail()
+	mail := mail.NewSmtpMail()
 
 	userRepository := userRepository.NewUserRepository(db)
 	userUseCase := userUseCase.NewUserUseCase(userRepository)

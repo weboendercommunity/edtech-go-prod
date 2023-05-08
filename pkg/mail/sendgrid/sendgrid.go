@@ -22,7 +22,7 @@ type MailImpl struct {
 
 func (mi *MailImpl) sendMail(toEmail string, result string, subject string) {
 
-	from := mail.NewEmail(os.Getenv("MAIL_SENDER"), os.Getenv("MAIL_SENDER"))
+	from := mail.NewEmail(os.Getenv("SENDGRID_MAIL_SENDER"), os.Getenv("SENDGRID_MAIL_SENDER"))
 	to := mail.NewEmail(toEmail, toEmail)
 
 	message := mail.NewSingleEmail(from, subject, to, "", result)
