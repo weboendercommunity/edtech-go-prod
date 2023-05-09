@@ -3,7 +3,7 @@ CREATE TABLE oauth_clients(
     client_id VARCHAR(255) NOT NULL,
     client_secret VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    redirect VARCHAR(255) NOT NULL,
+    redirect VARCHAR(255) NULL,
     description TEXT NULL,
     scope VARCHAR(255) NULL,
 

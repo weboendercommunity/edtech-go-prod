@@ -31,10 +31,10 @@ func (ur *UserRepositoryImpl) FindAll(offset int, limit int) []userEntity.User {
 func (ur *UserRepositoryImpl) FindByEmail(email string) (*userEntity.User, error) {
 	var user userEntity.User
 
-	err := ur.db.Where("email = ?", email).First(&user)
+	dataUser := ur.db.Where("email = ?", email).First(&user)
 
-	if err.Error != nil {
-		return nil, err.Error
+	if dataUser.Error != nil {
+		return nil, dataUser.Error
 	}
 
 	return &user, nil
@@ -44,10 +44,10 @@ func (ur *UserRepositoryImpl) FindByEmail(email string) (*userEntity.User, error
 func (ur *UserRepositoryImpl) FindById(id int64) (*userEntity.User, error) {
 	var user userEntity.User
 
-	err := ur.db.First(&user, id)
+	dataUser := ur.db.First(&user, id)
 
-	if err.Error != nil {
-		return nil, err.Error
+	if dataUser.Error != nil {
+		return nil, dataUser.Error
 	}
 
 	return &user, nil
@@ -55,10 +55,10 @@ func (ur *UserRepositoryImpl) FindById(id int64) (*userEntity.User, error) {
 
 // Create implements UserRepository
 func (ur *UserRepositoryImpl) Create(user userEntity.User) (*userEntity.User, error) {
-	err := ur.db.Create(&user)
+	createdUser := ur.db.Create(&user)
 
-	if err.Error != nil {
-		return nil, err.Error
+	if createdUser.Error != nil {
+		return nil, createdUser.Error
 	}
 
 	return &user, nil
@@ -66,10 +66,10 @@ func (ur *UserRepositoryImpl) Create(user userEntity.User) (*userEntity.User, er
 
 // Update implements UserRepository
 func (ur *UserRepositoryImpl) Update(user userEntity.User) (*userEntity.User, error) {
-	err := ur.db.Save(&user)
+	updatedUser := ur.db.Save(&user)
 
-	if err.Error != nil {
-		return nil, err.Error
+	if updatedUser.Error != nil {
+		return nil, updatedUser.Error
 	}
 
 	return &user, nil
@@ -77,10 +77,10 @@ func (ur *UserRepositoryImpl) Update(user userEntity.User) (*userEntity.User, er
 
 // Delete implements UserRepository
 func (ur *UserRepositoryImpl) Delete(user userEntity.User) error {
-	err := ur.db.Save(&user)
+	deletedUser := ur.db.Save(&user)
 
-	if err.Error != nil {
-		return err.Error
+	if deletedUser.Error != nil {
+		return deletedUser.Error
 	}
 
 	return nil

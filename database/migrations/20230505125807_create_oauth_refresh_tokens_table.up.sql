@@ -1,7 +1,7 @@
 CREATE TABLE oauth_refresh_tokens(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT(10) UNSIGNED NOT NULL,
-    access_token VARCHAR(100) NOT NULL,
+    refresh_token VARCHAR(255) NOT NULL,
     oauth_access_token_id INT(10) UNSIGNED NOT NULL,
     expired_at TIMESTAMP NOT NULL,
 

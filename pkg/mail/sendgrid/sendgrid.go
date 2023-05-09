@@ -64,10 +64,10 @@ func ParseTemplate(templateFileName string, data interface{}) (string, error) {
 
 	buf := new(bytes.Buffer)
 
-	errParse := t.Execute(buf, data)
+	parsedTemplate := t.Execute(buf, data)
 
-	if errParse != nil {
-		return "", errParse
+	if parsedTemplate != nil {
+		return "", parsedTemplate
 	}
 
 	return buf.String(), nil

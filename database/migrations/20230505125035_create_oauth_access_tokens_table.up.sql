@@ -1,6 +1,6 @@
 CREATE TABLE oauth_access_tokens(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    access_token VARCHAR(100) NOT NULL,
+    access_token VARCHAR(255) NOT NULL,
     user_id INT(10) UNSIGNED NOT NULL,
     scope VARCHAR(255) NULL,
     oauth_client_id INT(10) UNSIGNED NOT NULL,
