@@ -13,10 +13,10 @@ import (
 func DB() *gorm.DB {
 
 	pathdir, _ := os.Getwd()
-	err := godotenv.Load(filepath.Join(pathdir, ".env"))
+	environment := godotenv.Load(filepath.Join(pathdir, ".env"))
 
-	if err != nil {
-		panic(err)
+	if environment != nil {
+		panic(environment)
 	}
 
 	host := os.Getenv("DB_HOST")

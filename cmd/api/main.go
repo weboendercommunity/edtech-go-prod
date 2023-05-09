@@ -5,12 +5,9 @@ import (
 
 	mysql "edtech.id/pkg/db/mysql"
 
-	userRepository "edtech.id/internal/user/repository"
-	userUseCase "edtech.id/internal/user/usecase"
-
-	registerHandler "edtech.id/internal/register/delivery/http"
-	registerUseCase "edtech.id/internal/register/usecase"
-	mail "edtech.id/pkg/mail/gomail"
+	oauth "edtech.id/internal/oauth/injector"
+	profile "edtech.id/internal/profile/injector"
+	register "edtech.id/internal/register/injector"
 )
 
 func main() {
@@ -18,13 +15,9 @@ func main() {
 
 	r := gin.Default()
 
-	mail := mail.NewSmtpMail()
-
-	userRepository := userRepository.NewUserRepository(db)
-	userUseCase := userUseCase.NewUserUseCase(userRepository)
-
-	registerUseCase := registerUseCase.NewRegisterUseCase(userUseCase, mail)
-
-	registerHandler.NewRegisterHandler(registerUseCase).Route(&r.RouterGroup)
+	// wire
+	register.InitializedService(db).Route(&r.RouterGroup)
+	oauth.InitializedService(db).Route(&r.RouterGroup)
+	profile.InitializedService(db).Route(&r.RouterGroup)
 	r.Run("127.0.0.1:9090") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

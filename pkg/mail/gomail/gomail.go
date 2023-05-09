@@ -47,8 +47,13 @@ func (mi *SmtpMailImpl) SmtpSendMail(toEmail string, result string, subject stri
 
 	// Send email
 	// Send the email
-	if err := sender.DialAndSend(msg); err != nil {
-		panic(err)
+	sendMail := sender.DialAndSend(msg)
+
+	if sendMail != nil {
+		fmt.Println("Error sending email")
+		panic(sendMail)
+	} else {
+		fmt.Println("Email sent!")
 	}
 }
 
@@ -75,8 +80,10 @@ func SmtpParseTemplate(templateFileName string, data interface{}) (string, error
 
 	buf := new(bytes.Buffer)
 
-	if err := t.Execute(buf, data); err != nil {
-		return "", err
+	parsedTemplate := t.Execute(buf, data)
+
+	if parsedTemplate != nil {
+		return "", parsedTemplate
 	}
 
 	return buf.String(), nil

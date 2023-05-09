@@ -15,13 +15,14 @@ import (
 type UserUseCase interface {
 	FindAll(offset int, limit int) []userEntity.User
 	FindById(id int64) (*userEntity.User, error)
+	FindByEmail(email string) (*userEntity.User, error)
 	Create(userDto userDto.UserRequestBody) (*userEntity.User, error)
 	Update(userDto userDto.UserRequestBody) (*userEntity.User, error)
 	Delete(id int) error
 }
 
 type UserUseCaseImpl struct {
-	repository userRepository.UserRepository
+	userRepository userRepository.UserRepository
 }
 
 func NewUserUseCase(ur userRepository.UserRepository) UserUseCase {
@@ -33,14 +34,19 @@ func (*UserUseCaseImpl) FindAll(offset int, limit int) []userEntity.User {
 	panic("unimplemented")
 }
 
+// FindByEmail implements UserUseCase
+func (uu *UserUseCaseImpl) FindByEmail(email string) (*userEntity.User, error) {
+	return uu.userRepository.FindByEmail(email)
+}
+
 // FindById implements UserUseCase
-func (*UserUseCaseImpl) FindById(id int64) (*userEntity.User, error) {
-	panic("unimplemented")
+func (uu *UserUseCaseImpl) FindById(id int64) (*userEntity.User, error) {
+	return uu.userRepository.FindById(id)
 }
 
 // Create implements UserUseCase
 func (uu *UserUseCaseImpl) Create(userDto userDto.UserRequestBody) (*userEntity.User, error) {
-	checkUser, err := uu.repository.FindByEmail(*userDto.Email)
+	checkUser, err := uu.userRepository.FindByEmail(*userDto.Email)
 
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
@@ -63,7 +69,7 @@ func (uu *UserUseCaseImpl) Create(userDto userDto.UserRequestBody) (*userEntity.
 		CodeVerified: utils.RandString(32),
 	}
 
-	dataUser, err := uu.repository.Create(user)
+	dataUser, err := uu.userRepository.Create(user)
 
 	if err != nil {
 		return nil, err
