@@ -27,10 +27,10 @@ func (handler *OauthHandler) Route(r *gin.RouterGroup) {
 func (oh *OauthHandler) Login(ctx *gin.Context) {
 	var input oauthDto.LoginRequestBody
 
-	err := ctx.ShouldBindJSON(&input)
+	requestErr := ctx.ShouldBindJSON(&input)
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.Response(400, "Bad Request", err.Error()))
+	if requestErr != nil {
+		ctx.JSON(http.StatusBadRequest, utils.Response(400, "Bad Request", requestErr.Error()))
 		ctx.Abort()
 		return
 	}

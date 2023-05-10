@@ -27,10 +27,10 @@ func (rh *RegisterHandler) Register(ctx *gin.Context) {
 	// validate input
 	var registerRequestInput userDto.UserRequestBody
 
-	err := ctx.ShouldBindJSON(&registerRequestInput)
+	requestErr := ctx.ShouldBindJSON(&registerRequestInput)
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.Response(400, "Bad Request", err.Error()))
+	if requestErr != nil {
+		ctx.JSON(http.StatusBadRequest, utils.Response(400, "Bad Request", requestErr.Error()))
 		ctx.Abort()
 		return
 	}

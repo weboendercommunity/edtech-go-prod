@@ -5,6 +5,7 @@ import (
 
 	mysql "edtech.id/pkg/db/mysql"
 
+	admin "edtech.id/internal/admin/injector"
 	oauth "edtech.id/internal/oauth/injector"
 	profile "edtech.id/internal/profile/injector"
 	register "edtech.id/internal/register/injector"
@@ -16,6 +17,7 @@ func main() {
 	r := gin.Default()
 
 	// wire
+	admin.InitializeAdminHandler(db).Route(&r.RouterGroup)
 	register.InitializedService(db).Route(&r.RouterGroup)
 	oauth.InitializedService(db).Route(&r.RouterGroup)
 	profile.InitializedService(db).Route(&r.RouterGroup)
