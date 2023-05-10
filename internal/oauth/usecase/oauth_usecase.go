@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	adminUseCase "edtech.id/internal/admin/usecase"
 	oauthDto "edtech.id/internal/oauth/dto"
 	oauthEntity "edtech.id/internal/oauth/entity"
 	oauthRepository "edtech.id/internal/oauth/repository"
@@ -27,6 +28,7 @@ type OauthUseCaseImpl struct {
 	oauthAccessTokenRepository  oauthRepository.OauthAccessTokenRepository
 	oauthRefreshTokenRepository oauthRepository.OauthRefreshTokenRepository
 	userUseCase                 userUseCase.UserUseCase
+	adminUseCase                adminUseCase.AdminUseCase
 }
 
 // Login implements OauthUseCase
@@ -40,18 +42,34 @@ func (ou *OauthUseCaseImpl) Login(loginRequestBody oauthDto.LoginRequestBody) (*
 
 	var user oauthDto.UserResponseBody
 
-	// Login user
+	// Login admin
 
-	dataUser, err := ou.userUseCase.FindByEmail(loginRequestBody.Email)
+	if oauthClient.Name == "web-admin" {
+		dataAdmin, err := ou.adminUseCase.FindByEmail(loginRequestBody.Email)
 
-	if err != nil {
-		return nil, errors.New("invalid email")
+		if err != nil {
+			return nil, errors.New("invalid email")
+		}
+
+		user.ID = dataAdmin.ID
+		user.Name = dataAdmin.Name
+		user.Email = dataAdmin.Email
+		user.Password = dataAdmin.Password
+
+	} else {
+		// Login user
+
+		dataUser, err := ou.userUseCase.FindByEmail(loginRequestBody.Email)
+
+		if err != nil {
+			return nil, errors.New("invalid email")
+		}
+
+		user.ID = dataUser.ID
+		user.Email = dataUser.Email
+		user.Name = dataUser.Name
+		user.Password = dataUser.Password
 	}
-
-	user.ID = dataUser.ID
-	user.Email = dataUser.Email
-	user.Name = dataUser.Name
-	user.Password = dataUser.Password
 
 	jwtKey := []byte(os.Getenv("JWT_SECRET"))
 
@@ -65,12 +83,16 @@ func (ou *OauthUseCaseImpl) Login(loginRequestBody oauthDto.LoginRequestBody) (*
 
 	claims := &oauthDto.ClaimsResponseBody{
 		ID:      user.ID,
-		Name:    user.Name,
 		Email:   user.Email,
-		IsAdmin: false,
+		Name:    user.Name,
+		IsAdmin: true,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
+	}
+
+	if oauthClient.Name != "web-admin" {
+		claims.IsAdmin = false
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -136,11 +158,14 @@ func NewOauthUseCase(
 	oauthClientRepository oauthRepository.OauthClientRepository,
 	oauthAccessTokenRepository oauthRepository.OauthAccessTokenRepository,
 	oauthRefreshTokenRepository oauthRepository.OauthRefreshTokenRepository,
-	userUseCase userUseCase.UserUseCase) OauthUseCase {
+	userUseCase userUseCase.UserUseCase,
+	adminUseCase adminUseCase.AdminUseCase,
+) OauthUseCase {
 	return &OauthUseCaseImpl{
 		oauthClientRepository,
 		oauthAccessTokenRepository,
 		oauthRefreshTokenRepository,
 		userUseCase,
+		adminUseCase,
 	}
 }
