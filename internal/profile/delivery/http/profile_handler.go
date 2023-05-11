@@ -18,11 +18,11 @@ func NewProfileHandler(profileUseCase profileUseCase.ProfileUseCase) *ProfileHan
 }
 
 func (handler *ProfileHandler) Route(r *gin.RouterGroup) {
-	authorized := r.Group("/api")
+	profileRouter := r.Group("/api")
 
-	authorized.Use(middleware.AuthJwt)
+	profileRouter.Use(middleware.AuthJwt)
 	{
-		authorized.GET("/profile", handler.GetProfile)
+		profileRouter.GET("/profile", handler.GetProfile)
 	}
 }
 
