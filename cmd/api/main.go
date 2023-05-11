@@ -6,6 +6,7 @@ import (
 	mysql "edtech.id/pkg/db/mysql"
 
 	admin "edtech.id/internal/admin/injector"
+	cart "edtech.id/internal/cart/injector"
 	oauth "edtech.id/internal/oauth/injector"
 	product "edtech.id/internal/product/injector"
 	productCategory "edtech.id/internal/product_category/injector"
@@ -25,6 +26,7 @@ func main() {
 	profile.InitializedService(db).Route(&r.RouterGroup)
 	productCategory.InitializedService(db).Route(&r.RouterGroup)
 	product.InitializedService(db).Route(&r.RouterGroup)
+	cart.InitializeService(db).Route(&r.RouterGroup)
 
 	r.Run("127.0.0.1:9090") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
