@@ -22,14 +22,15 @@ func NewProductCategoryHandler(productCategoryUsecase productCategoryUsecase.Pro
 func (productCategoryHandler *ProductCategoryHandler) Route(r *gin.RouterGroup) {
 	productCategoryRouter := r.Group("/api")
 
+	productCategoryRouter.GET("/product-categories", productCategoryHandler.FindAll)
+	productCategoryRouter.GET("/product-categories/:id", productCategoryHandler.FindById)
+
 	productCategoryRouter.Use(middleware.AuthJwt, middleware.AuthAdmin)
 	{
 		productCategoryRouter.POST("/product-categories", productCategoryHandler.Create)
 		productCategoryRouter.PATCH("/product-categories/:id", productCategoryHandler.Update)
 		productCategoryRouter.DELETE("/product-categories/:id", productCategoryHandler.Delete)
 	}
-	r.GET("/api/product-categories", productCategoryHandler.FindAll)
-	r.GET("/api/product-categories/:id", productCategoryHandler.FindById)
 
 }
 

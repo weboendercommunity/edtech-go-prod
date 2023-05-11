@@ -2,6 +2,7 @@ package utils
 
 import (
 	"math/rand"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -48,7 +49,15 @@ func Paginate(offset int, limit int) func(db *gorm.DB) *gorm.DB {
 		offset = (page - 1) * pageSize
 
 		return db.Offset(offset).Limit(pageSize)
-
-		return db.Offset(offset).Limit(limit)
 	}
+}
+
+func GetFileName(fileUrl string) string {
+	fileName := filepath.Base(fileUrl)
+
+	return fileName[:len(fileName)-len(filepath.Ext(fileName))]
+}
+
+func IsVideo(fileUrl string) bool {
+	return filepath.Ext(fileUrl) == ".mp4"
 }
