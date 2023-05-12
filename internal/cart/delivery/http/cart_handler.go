@@ -20,13 +20,13 @@ func (handler *CartHandler) Route(r *gin.RouterGroup) {
 
 	cartRouter.Use(middleware.AuthJwt)
 	{
-		cartRouter.GET("/", handler.FindById)
+		cartRouter.GET("/", handler.FindByUserId)
 		cartRouter.POST("/", handler.Create)
 		cartRouter.DELETE("/:id", handler.Delete)
 	}
 }
 
-func (cartHandler *CartHandler) FindById(ctx *gin.Context) {
+func (cartHandler *CartHandler) FindByUserId(ctx *gin.Context) {
 	offset, _ := strconv.Atoi(ctx.Query("offset"))
 	limit, _ := strconv.Atoi(ctx.Query("limit"))
 
@@ -76,7 +76,7 @@ func (cartHandler *CartHandler) Delete(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, utils.Response(http.StatusOK, "Success", "Success"))
+	ctx.JSON(http.StatusOK, utils.Response(http.StatusOK, "Success", nil))
 }
 
 func NewCartHandler(cartUsecase cartUsecase.CartUsecase) *CartHandler {

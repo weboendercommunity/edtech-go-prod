@@ -22,8 +22,9 @@ type CartUsecaseImpl struct {
 // Create implements CartUsecase
 func (cu *CartUsecaseImpl) Create(cartDto cartDto.CartRequestBody) (*cartEntity.Cart, error) {
 	cart := cartEntity.Cart{
-		ProductID: cartDto.ProductID,
-		UserID:    cartDto.UserID,
+		ProductID:   cartDto.ProductID,
+		UserID:      cartDto.UserID,
+		CreatedByID: cartDto.UserID,
 	}
 
 	//TODO: validate if product exist
