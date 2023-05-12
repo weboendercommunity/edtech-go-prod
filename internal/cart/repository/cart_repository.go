@@ -56,7 +56,7 @@ func (cr *CartRepositoryImpl) FindById(id int) (*cartEntity.Cart, error) {
 func (cr *CartRepositoryImpl) FindByUserId(userId int, offset int, limit int) []cartEntity.Cart {
 	var carts []cartEntity.Cart
 
-	cr.db.Scopes(utils.Paginate(offset, limit)).Preload("User").Preload("Product").Where("user_id = ?", userId).Find(&carts)
+	cr.db.Scopes(utils.Paginate(offset, limit)).Preload("Product").Preload("User").Where("user_id = ?", userId).Find(&carts)
 
 	return carts
 }
