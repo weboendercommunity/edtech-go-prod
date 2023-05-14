@@ -13,10 +13,26 @@ type CartUsecase interface {
 	FindById(id int) (*cartEntity.Cart, error)
 	Create(cartDto cartDto.CartRequestBody) (*cartEntity.Cart, error)
 	Delete(id int, userId int) error
+	DeleteByUserId(userId int) error
 }
 
 type CartUsecaseImpl struct {
 	cartRepository cartRepository.CartRepository
+}
+
+// DeleteByUserId implements CartUsecase
+func (cu *CartUsecaseImpl) DeleteByUserId(userId int) error {
+	carts := cu.FindByUserId(userId, 1, 9999)
+
+	for _, cart := range carts {
+		err := cu.cartRepository.Delete(cart)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Create implements CartUsecase

@@ -9,8 +9,8 @@ import (
 type DiscountRequestBody struct {
 	Name            string                      `json:"name" binding:"required"`
 	Code            string                      `json:"code" binding:"required"`
-	Quantity        int64                       `json:"quantity" binding:"required,number"`
-	Value           int64                       `json:"value" binding:"required,number"`
+	Quantity        int                         `json:"quantity" binding:"required,number"`
+	Value           int                         `json:"value" binding:"required,number"`
 	RemaingQuantity int64                       `json:"remaining_quantity" binding:"number"`
 	Type            discountEntity.DiscountType `json:"type" binding:"required"`
 	CreatedBy       int64                       `json:"created_by"`
