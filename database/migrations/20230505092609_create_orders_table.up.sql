@@ -3,7 +3,7 @@ CREATE TABLE orders(
     checkout_link VARCHAR(255) NOT NULL,
     price INT(10) UNSIGNED NOT NULL,
     total_price INT(10) UNSIGNED NOT NULL,
-    external_link VARCHAR(255) NOT NULL,
+    external_id VARCHAR(255) NOT NULL,
     status ENUM('pending', 'completed', 'canceled') NOT NULL DEFAULT 'pending',
 
     discount_id INT(10) UNSIGNED NULL DEFAULT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE orders(
 
     PRIMARY KEY (id),
     INDEX orders_checkout_link_index (checkout_link),
-    INDEX orders_external_link_index (external_link),
+    INDEX orders_external_id_index (external_id),
 
     CONSTRAINT orders_discount_id_foreign FOREIGN KEY (discount_id) REFERENCES discounts (id) ON DELETE SET NULL,
     CONSTRAINT orders_user_id_foreign FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,

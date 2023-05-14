@@ -1,7 +1,11 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
 	mysql "edtech.id/pkg/db/mysql"
 
@@ -9,11 +13,21 @@ import (
 	cart "edtech.id/internal/cart/injector"
 	discount "edtech.id/internal/discount/injector"
 	oauth "edtech.id/internal/oauth/injector"
+	order "edtech.id/internal/order/injector"
 	product "edtech.id/internal/product/injector"
 	productCategory "edtech.id/internal/product_category/injector"
 	profile "edtech.id/internal/profile/injector"
 	register "edtech.id/internal/register/injector"
 )
+
+func init() {
+	pathdir, _ := os.Getwd()
+	environment := godotenv.Load(filepath.Join(pathdir, ".env"))
+
+	if environment != nil {
+		panic(environment)
+	}
+}
 
 func main() {
 	db := mysql.DB()
@@ -29,6 +43,7 @@ func main() {
 	product.InitializedService(db).Route(&r.RouterGroup)
 	cart.InitializeService(db).Route(&r.RouterGroup)
 	discount.InitializeService(db).Route(&r.RouterGroup)
+	order.InitializeService(db).Route(&r.RouterGroup)
 
 	r.Run("127.0.0.1:9090") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

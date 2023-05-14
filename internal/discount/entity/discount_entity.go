@@ -11,9 +11,9 @@ type Discount struct {
 	ID                int64              `json:"id"`
 	Name              string             `json:"name"`
 	Code              string             `json:"code"`
-	Quantity          int64              `json:"quantity"`
-	Value             int64              `json:"value"`
-	RemainingQuantity int64              `json:"remaining_quantity"`
+	Quantity          int                `json:"quantity"`
+	Value             int                `json:"value"`
+	RemainingQuantity int                `json:"remaining_quantity"`
 	Type              DiscountType       `json:"type"`
 	StartDate         sql.NullTime       `json:"start_date"`
 	EndDate           sql.NullTime       `json:"end_date"`

@@ -3,22 +3,12 @@ package mysql
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func DB() *gorm.DB {
-
-	pathdir, _ := os.Getwd()
-	environment := godotenv.Load(filepath.Join(pathdir, ".env"))
-
-	if environment != nil {
-		panic(environment)
-	}
-
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	dbname := os.Getenv("DB_NAME")

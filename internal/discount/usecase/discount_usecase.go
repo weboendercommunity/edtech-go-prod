@@ -130,9 +130,9 @@ func (du *DiscountUsecaseImpl) UpdateRemainingQuantity(id int, quantity int, ope
 	}
 
 	if operator == "+" {
-		discount.RemainingQuantity += int64(quantity)
+		discount.RemainingQuantity += quantity
 	} else if operator == "-" {
-		discount.RemainingQuantity -= int64(quantity)
+		discount.RemainingQuantity -= quantity
 	} else {
 		return nil, errors.New("operator not valid")
 	}
