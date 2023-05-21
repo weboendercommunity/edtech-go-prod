@@ -172,7 +172,7 @@ func (pu *ProductUseCaseImpl) Update(id int, productDto productDto.ProductReques
 	return updatedProduct, nil
 }
 
-func NewProductUseCase(
+func NewProductUsecase(
 	productRepository productRepository.ProductRepository,
 	fileUpload fileUpload.FileUpload) ProductUseCase {
 	return &ProductUseCaseImpl{productRepository, fileUpload}

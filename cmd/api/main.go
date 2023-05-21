@@ -11,6 +11,7 @@ import (
 
 	admin "edtech.id/internal/admin/injector"
 	cart "edtech.id/internal/cart/injector"
+	classRoom "edtech.id/internal/class_room/injector"
 	discount "edtech.id/internal/discount/injector"
 	oauth "edtech.id/internal/oauth/injector"
 	order "edtech.id/internal/order/injector"
@@ -18,6 +19,7 @@ import (
 	productCategory "edtech.id/internal/product_category/injector"
 	profile "edtech.id/internal/profile/injector"
 	register "edtech.id/internal/register/injector"
+	webhook "edtech.id/internal/webhook/injector"
 )
 
 func init() {
@@ -44,6 +46,8 @@ func main() {
 	cart.InitializeService(db).Route(&r.RouterGroup)
 	discount.InitializeService(db).Route(&r.RouterGroup)
 	order.InitializeService(db).Route(&r.RouterGroup)
+	classRoom.InitializeService(db).Route(&r.RouterGroup)
+	webhook.InitializedService(db).Route(&r.RouterGroup)
 
 	r.Run("127.0.0.1:9090") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

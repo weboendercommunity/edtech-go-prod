@@ -4,7 +4,7 @@ CREATE TABLE orders(
     price INT(10) UNSIGNED NOT NULL,
     total_price INT(10) UNSIGNED NOT NULL,
     external_id VARCHAR(255) NOT NULL,
-    status ENUM('pending', 'completed', 'canceled') NOT NULL DEFAULT 'pending',
+    status ENUM('pending', 'completed','settled','canceled') NOT NULL DEFAULT 'pending',
 
     discount_id INT(10) UNSIGNED NULL DEFAULT NULL,
     user_id INT(10) UNSIGNED NOT NULL,

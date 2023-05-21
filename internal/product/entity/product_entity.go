@@ -15,6 +15,7 @@ type Product struct {
 	Title             string                                 `json:"title"`
 	Image             *string                                `json:"image"`
 	Video             *string                                `json:"video"`
+	VideoUrl          *string                                `json:"video_url,omitempty"`
 	Description       string                                 `json:"description"`
 	Price             int64                                  `json:"price"`
 	CreatedAt         sql.NullTime                           `json:"created_at"`

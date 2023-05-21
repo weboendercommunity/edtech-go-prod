@@ -2,6 +2,7 @@ package order
 
 import (
 	"net/http"
+	"strconv"
 
 	"edtech.id/internal/middleware"
 	orderDto "edtech.id/internal/order/dto"
@@ -41,12 +42,24 @@ func (oh *OrderHandler) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.Response(200, "Success", data))
 }
 
+func (oh *OrderHandler) FindAllByUserID(ctx *gin.Context) {
+	offset, _ := strconv.Atoi(ctx.Query("offset"))
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+
+	user := utils.GetCurrentUser(ctx)
+
+	data := oh.orderUsecase.FindAllByUserID(offset, limit, int(user.ID))
+
+	ctx.JSON(http.StatusOK, utils.Response(200, "Success", data))
+}
+
 func (oh *OrderHandler) Route(r *gin.RouterGroup) {
 	orderRouter := r.Group("/api/order")
 
 	orderRouter.Use(middleware.AuthJwt)
 	{
 		orderRouter.POST("/", oh.Create)
+		orderRouter.GET("/", oh.FindAllByUserID)
 	}
 }
 
