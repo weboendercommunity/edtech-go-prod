@@ -2,6 +2,7 @@ package order
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	cartUsecase "edtech.id/internal/cart/usecase"
@@ -22,7 +23,10 @@ import (
 type OrderUsecase interface {
 	Create(orderDto orderDto.OrderRequestBody) (*orderEntity.Order, error)
 	FindAll(offset int, limit int) []orderEntity.Order
+	FindAllByUserID(offset int, limit int, userId int) []orderEntity.Order
 	FindById(id int) (*orderEntity.Order, error)
+	FindByExternalId(externalId string) (*orderEntity.Order, error)
+	Update(id int, orderDto orderDto.OrderRequestBody) (*orderEntity.Order, error)
 }
 
 type OrderUsecaseImpl struct {
@@ -32,6 +36,36 @@ type OrderUsecaseImpl struct {
 	productUsecase     productUsecase.ProductUseCase
 	orderDetailUsecase orderDetailUsecase.OrderDetailUsecase
 	paymentUsecase     paymentUsecase.PaymentUsecase
+}
+
+// Update implements OrderUsecase
+func (ou *OrderUsecaseImpl) Update(id int, orderDto orderDto.OrderRequestBody) (*orderEntity.Order, error) {
+	order, err := ou.orderRepository.FindById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	order.Status = orderDto.Status
+
+	updatedOrder, err := ou.orderRepository.Update(*order)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedOrder, nil
+}
+
+// FindByExternalId implements OrderUsecase
+func (ou *OrderUsecaseImpl) FindByExternalId(externalId string) (*orderEntity.Order, error) {
+	order, err := ou.orderRepository.FindOneByExternalId(externalId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return order, nil
 }
 
 // Create implements OrderUsecase
@@ -131,6 +165,8 @@ func (ou *OrderUsecaseImpl) Create(orderDto orderDto.OrderRequestBody) (*orderEn
 	// insert order
 	createdOrder, err := ou.orderRepository.Create(order)
 
+	fmt.Println(createdOrder.ID)
+
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +227,6 @@ func (ou *OrderUsecaseImpl) Create(orderDto orderDto.OrderRequestBody) (*orderEn
 	}
 
 	return updatedOrder, nil
-
 }
 
 // FindAll implements OrderUsecase
@@ -202,6 +237,10 @@ func (ou *OrderUsecaseImpl) FindAll(offset int, limit int) []orderEntity.Order {
 // FindById implements OrderUsecase
 func (ou *OrderUsecaseImpl) FindById(id int) (*orderEntity.Order, error) {
 	return ou.orderRepository.FindById(id)
+}
+
+func (ou *OrderUsecaseImpl) FindAllByUserID(offset int, limit int, userId int) []orderEntity.Order {
+	return ou.orderRepository.FindAllByUserID(offset, limit, userId)
 }
 
 func NewOrderUsecase(

@@ -15,7 +15,7 @@ import (
 func InitializedService(db *gorm.DB) *productHandler.ProductHandler {
 	wire.Build(
 		productHandler.NewProductHandler,
-		productUsecase.NewProductUseCase,
+		productUsecase.NewProductUsecase,
 		productRepository.NewProductRepository,
 		fileUpload.NewFileUpload,
 	)

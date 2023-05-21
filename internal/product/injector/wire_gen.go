@@ -19,7 +19,7 @@ import (
 func InitializedService(db *gorm.DB) *product.ProductHandler {
 	productRepository := product2.NewProductRepository(db)
 	fileUpload := fileupload.NewFileUpload()
-	productUseCase := product3.NewProductUseCase(productRepository, fileUpload)
+	productUseCase := product3.NewProductUsecase(productRepository, fileUpload)
 	productHandler := product.NewProductHandler(productUseCase)
 	return productHandler
 }
