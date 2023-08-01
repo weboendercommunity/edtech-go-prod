@@ -1,6 +1,6 @@
 # Edtech
 
-API collection for Edtech application.
+API collection for Edtech application!
 
 ## Tech Stack
 
